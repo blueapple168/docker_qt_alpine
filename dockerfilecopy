@@ -1,2 +1,0 @@
-docker cp foo.txt mycontainer:/foo.txt
-docker cp mycontainer:/foo.txt foo.txt
