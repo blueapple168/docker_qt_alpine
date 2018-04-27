@@ -9,12 +9,12 @@ RUN yum -y update; yum clean all \
 	&& cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 	&& yum install -y http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm \
 	&& yum install -y https://extras.getpagespeed.com/redhat/7/noarch/RPMS/getpagespeed-extras-7-0.el7.gps.noarch.rpm \
-	&& yum install nginx \
-	&& yum install nginx-module-nps \
+	&& yum install -y nginx \
+	&& yum install -y nginx-module-nps \
 	&& rm -rf /tmp/* \
-    # Forward request and error logs to docker log collector
-    && ln -sf /dev/stdout /var/log/nginx/access.log \
-    && ln -sf /dev/stderr /var/log/nginx/error.log
+	# Forward request and error logs to docker log collector
+	&& ln -sf /dev/stdout /var/log/nginx/access.log \
+	&& ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY ./conf.d /etc/nginx/conf.d
 COPY ./nginx.conf /etc/nginx/nginx.conf
