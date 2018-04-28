@@ -1,6 +1,6 @@
 FROM centos:7
 MAINTAINER blueapple <blueapple1120@qq.com>
-LABEL description="nginx-v1.14,pagespeed-v1.13.35.2"
+LABEL description="nginx-v1.14,pagespeed-v1.13.35.2,openjdk1.8.0"
 
 # Set zh_CN timezone
 RUN yum -y update; yum clean all \
@@ -24,6 +24,5 @@ ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk.x86_64
 ENV PATH $PATH:/usr/lib/jvm/java-1.8.0-openjdk.x86_64/jre/bin:/usr/lib/jvm/java-1.8.0-openjdk.x86_64/bin
 
 VOLUME ["/var/cache/ngx_pagespeed"]
-
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]
