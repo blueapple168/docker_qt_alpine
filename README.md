@@ -1,8 +1,6 @@
-# Docker for ngx_pagespeed
-pagespeed：1.13.35.2  
+# Docker for alpine_openjdk_glibc
+alpine：3.7
 
 openjdk：1.8  
 
-nginx：1.14  
-
-Centos：7
+glibc：2.26-r0
