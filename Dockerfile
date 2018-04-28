@@ -1,6 +1,6 @@
 FROM  alpine:3.7
 
-MAINTAINER blueapple <baidongying@cnpc.com.cn>
+MAINTAINER blueapple <blueapple1120@qq.com>
 
 ENV GLIBC_VERSION=2.26-r0
 
