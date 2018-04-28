@@ -1,6 +1,6 @@
 # Docker for alpine_openjdk_glibc
-alpine：3.7
+alpine
 
-openjdk：1.8  
+openjdk
 
 glibc：2.26-r0
