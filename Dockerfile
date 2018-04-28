@@ -1,28 +1,36 @@
-FROM centos:7
-MAINTAINER blueapple <blueapple1120@qq.com>
-LABEL description="nginx-v1.14,pagespeed-v1.13.35.2,openjdk1.8.0"
+FROM  alpine:3.7
 
-# Set zh_CN timezone
-RUN yum -y update; yum clean all \
-	&& yum install -y java-1.8.0-openjdk.x86_64 java-1.8.0-openjdk-devel.x86_64 gcc-c++ pcre-devel zlib-devel make unzip libuuid-devel cmake \
-	&& yum clean all \
-	&& cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-	&& yum install -y http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm \
-	&& yum install -y https://extras.getpagespeed.com/redhat/7/noarch/RPMS/getpagespeed-extras-7-0.el7.gps.noarch.rpm \
-	&& yum install -y nginx \
-	&& yum install -y nginx-module-nps \
-	&& rm -rf /tmp/* \
-	# Forward request and error logs to docker log collector
-	&& ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log
+MAINTAINER blueapple <baidongying@cnpc.com.cn>
 
-COPY ./conf.d /etc/nginx/conf.d
-COPY ./nginx.conf /etc/nginx/nginx.conf
+ENV GLIBC_VERSION=2.26-r0
 
-# Set java environment
-ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk.x86_64
-ENV PATH $PATH:/usr/lib/jvm/java-1.8.0-openjdk.x86_64/jre/bin:/usr/lib/jvm/java-1.8.0-openjdk.x86_64/bin
+# Install glibc
+RUN apk add --no-cache --virtual .build-deps ca-certificates wget libgcc \
+    && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub \
+    && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
+    && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk \
+    && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk \
+    && apk add --allow-untrusted glibc-bin-${GLIBC_VERSION}.apk glibc-${GLIBC_VERSION}.apk glibc-i18n-${GLIBC_VERSION}.apk
 
-VOLUME ["/var/cache/ngx_pagespeed"]
-EXPOSE 80 443
-CMD ["nginx", "-g", "daemon off;"]
+# Install openjdk8
+RUN apk update \
+    && apk add curl bash tree tzdata openjdk8 \
+    && cp -r -f /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && apk del tree \
+               wget \
+    && rm -rf /var/cache/apk/* \
+    && apk del .build-deps \
+    && rm -rf /glibc-bin-${GLIBC_VERSION}.apk \
+    && rm -rf /glibc-${GLIBC_VERSION}.apk \
+    && rm -rf /glibc-i18n-${GLIBC_VERSION}.apk
+
+# Set environment
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
+ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
+ENV JAVA_VERSION 8u151
+ENV JAVA_ALPINE_VERSION 8.151.12-r0
+
+RUN set -x \
+	&& apk add --no-cache \
+		openjdk8="$JAVA_ALPINE_VERSION" \
+	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
