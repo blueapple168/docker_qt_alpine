@@ -1,4 +1,4 @@
-FROM  blueapple168/alpine35_glibc_basicimage
+FROM  blueapple/alpine35_glibc_basicimage
 
 RUN apk add --no-cache \
     	bash \
