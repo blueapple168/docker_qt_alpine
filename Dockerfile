@@ -1,7 +1,5 @@
-FROM  blueapple/alpine_glibc_basicimage
-
+FROM alpine:latest
 MAINTAINER blueapple <blueapple1120@qq.com>
-
 RUN apk add --no-cache \
     	bash \
 	cmake \
@@ -12,8 +10,7 @@ RUN apk add --no-cache \
 	graphviz \
 	make \
 	musl-dev \
-    	qt \
-    	qt-dev \
+	qt \
 	qt5-qtbase-dev \
 	sudo \
  && ln -s /usr/bin/qmake-qt5 /usr/bin/qmake \
