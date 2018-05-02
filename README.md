@@ -3,4 +3,4 @@ alpine
 
 openjdk
 
-glibc：2.26-r0
+glibc
