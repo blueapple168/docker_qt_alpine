@@ -1,4 +1,4 @@
-FROM blueapple/alpine_glibc_basicimage
+FROM blueapple/baseimage:base
 MAINTAINER blueapple <blueapple1120@qq.com>
 RUN apk add --no-cache \
     	bash \
