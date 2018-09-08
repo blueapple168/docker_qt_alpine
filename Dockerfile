@@ -14,10 +14,10 @@ RUN apk add --no-cache \
 	qt5-qtbase-dev \
 	sudo \
  && ln -s /usr/bin/qmake-qt5 /usr/bin/qmake \
- && adduser -D -h /home/user user \
- && echo 'user ALL=(ALL) NOPASSWD: ALL' >/etc/sudoers.d/user
+ && adduser -D -h /home/admin admin \
+ && echo 'admin ALL=(ALL) NOPASSWD: ALL' >/etc/sudoers.d/admin
 
-USER user
-ENV HOME /home/user
-WORKDIR /home/user
+USER admin
+ENV HOME /home/admin
+WORKDIR /home/admin
 CMD ["/bin/bash"]
